@@ -4,6 +4,16 @@ GO
 RECONFIGURE WITH OVERRIDE
 GO
 
+--Create MyContainedDatabase
+CREATE DATABASE [MyContainedDatabase]
+ CONTAINMENT = PARTIAL
+ ON  PRIMARY 
+( NAME = N'MyContainedDatabase', FILENAME = N'D:\Databases\MyContainedDatabase.mdf' , 
+	SIZE = 8192KB , FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'MyContainedDatabase_log', FILENAME = N'D:\Databases\MyContainedDatabase_log.ldf' , 
+	SIZE = 8192KB , FILEGROWTH = 65536KB )
+
 --Set containment at the database level
 ALTER DATABASE [MyContainedDatabase]
 SET CONTAINMENT = PARTIAL
