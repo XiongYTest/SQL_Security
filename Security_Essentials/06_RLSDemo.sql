@@ -8,17 +8,16 @@ GO
 USE RLS_DEMO
 GO
 
---CREATE Self-contained Database Logins
+--CREATE Self-contained Database Users without Logins
 CREATE USER Jack WITHOUT LOGIN
 CREATE USER Diane WITHOUT LOGIN
 CREATE USER Manager WITHOUT LOGIN
 GO
 
 --Create Customer Table
-CREATE TABLE dbo.customer
+CREATE TABLE dbo.Customer
 (CustID tinyint IDENTITY,
- CustFirstName varchar(15),
- CustLastName varchar(20),
+ CustomerName varchar(30),
  CustomerEmail varchar(30),
  SalesPersonName varchar(5))
 GO
@@ -30,22 +29,22 @@ GO
 
 --INSERT Data into Customer Table
 INSERT INTO dbo.CUSTOMER VALUES
-('Stephen', 'Jiang', 'Stephen.Jiang@adworks.com', 'Jack'),
-('Michael','Blythe', 'M.Blythe@contoso.com', 'Jack'),
-('Linda', 'Mitchell', 'LindaM@VolcanoCoffee.org', 'Jack'),
-('Jilian', ' Carson', 'JilianC@Northwind.net', 'Jack'),
-('Garret', 'Vargas', 'GarVar@WorldWideImporters.com', 'Diane'),
-('Shu', 'Ito', 'ShuIto@BlueYonder.com', 'Diane'),
-('Tsvi','Reiter', 'Tsvi.Reiter@CohoVines.com', 'Diane'),
-('Syed', 'Abbas','Syed.Abbas@AlpineSki.com', 'Diane')
+('Stephen Jiang', 'Stephen.Jiang@adworks.com', 'Jack'),
+('Michael Blythe', 'Michael@contoso.com', 'Jack'),
+('Linda Mitchell', 'Linda@VolcanoCoffee.org', 'Jack'),
+('Jilian Carson', 'JilianC@Northwind.net', 'Jack'),
+('Garret Vargas', 'Garret@WorldWideImporters.com', 'Diane'),
+('Shu Ito', 'Shu@BlueYonder.com', 'Diane'),
+('Sahana Reiter', 'Sahana@CohoVines.com', 'Diane'),
+('Syed Abbas','Syed@AlpineSki.com', 'Diane')
 GO
 
 
 --Test Row-Level Security again
 --Execute as Manager, Jack, and Diane
 --They should be able to read all the records
-EXECUTE AS USER = 'Jack'
-SELECT CustID, CustomerEmail, SalesPersonName
+EXECUTE AS USER = 'Diane'
+SELECT CustomerName, CustomerEmail, SalesPersonName
 FROM dbo.Customer
 REVERT
 GO
@@ -79,9 +78,9 @@ GO
 
 --Test Row-Level Security for Updates
 --Execute as Manager, Jack, and Diane
-EXECUTE AS USER = 'Diane'
+EXECUTE AS USER = 'Manager'
 UPDATE dbo.CUSTOMER
-SET CustomerEmail = 'Syed.Abbas@AdWorks.com'
+SET SalesPersonName = 'Diane'
 WHERE CustID = 8
 REVERT
 GO
