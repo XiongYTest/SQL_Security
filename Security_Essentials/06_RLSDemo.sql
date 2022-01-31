@@ -40,10 +40,10 @@ INSERT INTO dbo.CUSTOMER VALUES
 GO
 
 
---Test Row-Level Security again
+--Select records Before implementing Row-Level Security
 --Execute as Manager, Jack, and Diane
 --They should be able to read all the records
-EXECUTE AS USER = 'Diane'
+EXECUTE AS USER = 'Manager'
 SELECT CustomerName, CustomerEmail, SalesPersonName
 FROM dbo.Customer
 REVERT
@@ -70,7 +70,7 @@ GO
 --Execute as Manager, Jack, and Diane
 --Jack and Diane should only see their customers.
 --Manager can still see all records.
-EXECUTE AS USER = 'Diane'
+EXECUTE AS USER = 'Jack'
 SELECT CustID, CustomerEmail, SalesPersonName
 FROM dbo.Customer
 REVERT
@@ -78,9 +78,9 @@ GO
 
 --Test Row-Level Security for Updates
 --Execute as Manager, Jack, and Diane
-EXECUTE AS USER = 'Manager'
+EXECUTE AS USER = 'Diane'
 UPDATE dbo.CUSTOMER
-SET SalesPersonName = 'Diane'
+SET SalesPersonName = 'Jack'
 WHERE CustID = 8
 REVERT
 GO
